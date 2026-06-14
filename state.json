@@ -1,0 +1,169 @@
+{
+  "teams": [
+    {
+      "id": "team_search",
+      "name": "搜索組",
+      "mission": "人命搜尋",
+      "leader": "温欣凱",
+      "members": [
+        "陳小華"
+      ],
+      "status": "exited",
+      "entryTimestamp": 1781409893329,
+      "exitTimestamp": 1781409897855,
+      "acknowledgedIntervals": [],
+      "rows": {
+        "entry": {
+          "time": "12:04",
+          "pressure": "200",
+          "info": "二樓"
+        },
+        "reports": [
+          {
+            "time": "",
+            "pressure": "",
+            "info": ""
+          },
+          {
+            "time": "",
+            "pressure": "",
+            "info": ""
+          }
+        ],
+        "exit": {
+          "time": "12:04",
+          "pressure": "",
+          "info": ""
+        }
+      }
+    },
+    {
+      "id": "team_fire",
+      "name": "滅火組",
+      "mission": "攻擊車: 車, 水帶: 線",
+      "leader": "",
+      "members": [],
+      "status": "exited",
+      "entryTimestamp": 1781409434783,
+      "exitTimestamp": 1781409438236,
+      "acknowledgedIntervals": [],
+      "rows": {
+        "entry": {
+          "time": "11:57",
+          "pressure": "",
+          "info": ""
+        },
+        "reports": [
+          {
+            "time": "",
+            "pressure": "",
+            "info": ""
+          },
+          {
+            "time": "",
+            "pressure": "",
+            "info": ""
+          }
+        ],
+        "exit": {
+          "time": "11:57",
+          "pressure": "",
+          "info": ""
+        }
+      }
+    },
+    {
+      "id": "team_vent",
+      "name": "破壞組",
+      "mission": "排煙破壞",
+      "leader": "",
+      "members": [],
+      "status": "idle",
+      "entryTimestamp": null,
+      "exitTimestamp": null,
+      "acknowledgedIntervals": [],
+      "rows": {
+        "entry": {
+          "time": "",
+          "pressure": "",
+          "info": ""
+        },
+        "reports": [
+          {
+            "time": "",
+            "pressure": "",
+            "info": ""
+          },
+          {
+            "time": "",
+            "pressure": "",
+            "info": ""
+          }
+        ],
+        "exit": {
+          "time": "",
+          "pressure": "",
+          "info": ""
+        }
+      }
+    },
+    {
+      "id": "team_rit",
+      "name": "RIT小組",
+      "mission": "緊急救援待命",
+      "leader": "",
+      "members": [],
+      "status": "idle",
+      "entryTimestamp": null,
+      "exitTimestamp": null,
+      "acknowledgedIntervals": [],
+      "rows": {
+        "entry": {
+          "time": "",
+          "pressure": "",
+          "info": ""
+        },
+        "reports": [
+          {
+            "time": "",
+            "pressure": "",
+            "info": ""
+          },
+          {
+            "time": "",
+            "pressure": "",
+            "info": ""
+          }
+        ],
+        "exit": {
+          "time": "",
+          "pressure": "",
+          "info": ""
+        }
+      }
+    }
+  ],
+  "roster": {
+    "苗栗分隊": [
+      "温欣凱",
+      "陳小華",
+      "張明志",
+      "李國強"
+    ],
+    "頭屋分隊": [
+      "徐大明",
+      "黃國書"
+    ],
+    "特搜分隊": [
+      "王大同",
+      "劉勇信",
+      "趙傑生"
+    ],
+    "公館分隊": [
+      "江建平",
+      "林政憲"
+    ],
+    "銅鑼分隊": [],
+    "三義分隊": []
+  }
+}

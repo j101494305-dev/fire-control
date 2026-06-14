@@ -1,0 +1,1405 @@
+/* 
+   消防人員管制系統 - 主樣式表 (Premium Tactical Dark Theme)
+   製作者：苗栗分隊 温欣凱
+*/
+
+:root {
+    --bg-primary: #070a12;
+    --bg-secondary: #0f1626;
+    --bg-card: rgba(15, 22, 38, 0.75);
+    --bg-input: rgba(7, 10, 18, 0.6);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-focus: #00d8ff;
+    
+    /* Neon Colors */
+    --cyan: #00e5ff;
+    --cyan-glow: rgba(0, 229, 255, 0.4);
+    --green: #00e676;
+    --green-glow: rgba(0, 230, 118, 0.4);
+    --yellow: #ffeb3b;
+    --yellow-glow: rgba(255, 235, 59, 0.4);
+    --red: #ff1744;
+    --red-glow: rgba(255, 23, 68, 0.6);
+    
+    /* Status Colors */
+    --status-idle: #718096;
+    --status-entered: var(--cyan);
+    --status-alarm: var(--red);
+    --status-exited: var(--green);
+
+    /* Text Colors */
+    --text-primary: #f7fafc;
+    --text-secondary: #a0aec0;
+    --text-muted: #718096;
+    
+    /* Font Families */
+    --font-ui: 'Noto Sans TC', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-timer: 'Orbitron', monospace;
+    
+    --shadow-premium: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --radius-lg: 16px;
+    --radius-md: 10px;
+    --radius-sm: 6px;
+}
+
+/* 全域重設 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-ui);
+    line-height: 1.5;
+    overflow-x: hidden;
+    min-height: 100vh;
+    padding-bottom: 20px;
+}
+
+/* 自訂捲軸 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.app-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+/* ==========================================================================
+   1. Header Section
+   ========================================================================== */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(15, 22, 38, 0.8) 100%);
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(12px);
+    padding: 15px 24px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-premium);
+    margin-bottom: 15px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo {
+    font-size: 2.2rem;
+    animation: pulse-logo 2s infinite ease-in-out;
+}
+
+@keyframes pulse-logo {
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px var(--red-glow)); }
+    50% { transform: scale(1.1); filter: drop-shadow(0 0 10px var(--red-glow)); }
+}
+
+.title-area h1 {
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: linear-gradient(to right, #ffffff, #a5f3fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.creator-tag {
+    font-size: 0.82rem;
+    color: var(--cyan);
+    font-weight: 500;
+    opacity: 0.9;
+    margin-top: 2px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.connection-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 6px 12px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--green);
+    box-shadow: 0 0 8px var(--green);
+}
+
+.status-dot.pulsing {
+    animation: status-pulse 1.5s infinite;
+}
+
+.status-dot.disconnected {
+    background-color: var(--red);
+    box-shadow: 0 0 8px var(--red);
+}
+
+@keyframes status-pulse {
+    0% { transform: scale(0.9); opacity: 0.6; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(0.9); opacity: 0.6; }
+}
+
+.status-text {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.live-clock {
+    font-family: var(--font-timer);
+    font-size: 1.5rem;
+    color: var(--cyan);
+    text-shadow: 0 0 8px var(--cyan-glow);
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* ==========================================================================
+   2. Control Panel Section
+   ========================================================================== */
+.control-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.panel-left, .panel-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.panel-center {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+}
+
+/* Buttons */
+.btn {
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 10px 18px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 44px; /* Mobile touch size friendliness */
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #00B8D9 0%, #0091AE 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 184, 217, 0.2);
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 184, 217, 0.4);
+    background: linear-gradient(135deg, #00C6EB 0%, #00A3C4 100%);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* 音效控制鈕特殊樣式 */
+.btn-sound {
+    font-weight: bold;
+}
+.btn-sound.status-on {
+    background: linear-gradient(135deg, rgba(0, 230, 118, 0.15) 0%, rgba(0, 230, 118, 0.05) 100%);
+    border-color: var(--green);
+    color: var(--green);
+    box-shadow: 0 0 10px rgba(0, 230, 118, 0.1);
+}
+.btn-sound.status-off {
+    background: linear-gradient(135deg, rgba(255, 23, 68, 0.15) 0%, rgba(255, 23, 68, 0.05) 100%);
+    border-color: var(--red);
+    color: var(--red);
+    box-shadow: 0 0 10px rgba(255, 23, 68, 0.1);
+}
+
+/* Share URL Container */
+.share-url-container {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    padding: 6px 14px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+}
+
+.share-label {
+    color: var(--text-secondary);
+}
+
+.share-url {
+    color: var(--cyan);
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.btn-qr {
+    background: rgba(0, 229, 255, 0.1);
+    color: var(--cyan);
+    border: 1px solid rgba(0, 229, 255, 0.2);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-qr:hover {
+    background: rgba(0, 229, 255, 0.2);
+}
+
+/* View Switch */
+.view-switch-container {
+    display: flex;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 4px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+}
+
+.btn-switch {
+    font-family: var(--font-ui);
+    font-size: 0.88rem;
+    padding: 8px 14px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.btn-switch.active {
+    background: var(--bg-secondary);
+    color: var(--cyan);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0, 229, 255, 0.15);
+}
+
+/* Test Mode Switch */
+.test-mode-container {
+    background: rgba(255, 235, 59, 0.05);
+    border: 1px solid rgba(255, 235, 59, 0.15);
+    padding: 6px 12px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+}
+
+.switch-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--yellow);
+}
+
+.switch-label input {
+    display: none;
+}
+
+.switch-slider {
+    width: 32px;
+    height: 16px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    position: relative;
+    transition: background-color 0.2s;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.switch-slider::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--text-secondary);
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.switch-label input:checked + .switch-slider {
+    background-color: var(--yellow);
+}
+
+.switch-label input:checked + .switch-slider::before {
+    transform: translateX(16px);
+    background-color: #000000;
+}
+
+/* ==========================================================================
+   3. Main Board Content Views
+   ========================================================================== */
+.board-content {
+    min-height: 50vh;
+}
+
+.view-panel {
+    display: none;
+}
+
+.view-panel.active {
+    display: block;
+}
+
+/* 查無小組提示 */
+.no-teams-message {
+    text-align: center;
+    padding: 60px 20px;
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    margin-top: 10px;
+}
+
+.alert-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}
+
+.no-teams-message h3 {
+    font-size: 1.25rem;
+    margin-bottom: 6px;
+    color: var(--text-primary);
+}
+
+.no-teams-message p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   3.1 看板模式 (Grid View / 卡片式)
+   -------------------------------------------------------------------------- */
+.team-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 20px;
+    padding-top: 5px;
+}
+
+.team-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-premium);
+    backdrop-filter: blur(12px);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.team-card:hover {
+    transform: translateY(-2px);
+}
+
+/* 狀態邊框色彩 */
+.team-card.status-idle {
+    border-top: 5px solid var(--status-idle);
+}
+
+.team-card.status-entered {
+    border-top: 5px solid var(--status-entered);
+    box-shadow: 0 8px 32px 0 rgba(0, 229, 255, 0.08);
+}
+
+.team-card.status-alarm {
+    border-top: 5px solid var(--status-alarm);
+    animation: flash-card-border 1s infinite alternate;
+    box-shadow: 0 8px 32px 0 rgba(255, 23, 68, 0.15);
+}
+
+.team-card.status-exited {
+    border-top: 5px solid var(--status-exited);
+    opacity: 0.85;
+}
+
+@keyframes flash-card-border {
+    0% { border-color: var(--border-color); box-shadow: 0 8px 32px 0 rgba(255, 23, 68, 0.05); }
+    100% { border-color: var(--red); box-shadow: 0 8px 32px 0 rgba(255, 23, 68, 0.25); }
+}
+
+/* 卡片頭部 */
+.card-header {
+    padding: 14px 18px;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.card-header-left {
+    flex-grow: 1;
+}
+
+.team-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.team-card-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.mission-tag {
+    font-size: 0.75rem;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-secondary);
+    padding: 2px 8px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.status-badge {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+}
+.status-badge.idle { background: rgba(113, 128, 150, 0.15); color: var(--text-secondary); }
+.status-badge.entered { background: rgba(0, 229, 255, 0.15); color: var(--cyan); }
+.status-badge.alarm { background: rgba(255, 23, 68, 0.2); color: var(--red); animation: pulse-text 1s infinite alternate; }
+.status-badge.exited { background: rgba(0, 230, 118, 0.15); color: var(--green); }
+
+@keyframes pulse-text {
+    0% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+.btn-card-edit {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 2px;
+    transition: color 0.2s;
+}
+
+.btn-card-edit:hover {
+    color: var(--cyan);
+}
+
+/* 隊員名單顯示區 */
+.card-roster {
+    padding: 10px 18px;
+    background: rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.roster-role-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.role-label {
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 1px 6px;
+    border-radius: 4px;
+}
+
+.role-leader { background: rgba(255, 196, 0, 0.15); color: var(--yellow); border: 1px solid rgba(255, 196, 0, 0.2); }
+.role-members { background: rgba(255, 255, 255, 0.05); color: var(--text-secondary); border: 1px solid rgba(255, 255, 255, 0.08); }
+
+.badge-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+.badge-name.leader {
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 0 4px var(--yellow-glow);
+}
+
+/* 卡片主體與計時器 */
+.card-body {
+    padding: 16px 18px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.timer-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    padding: 8px 15px;
+    border-radius: var(--radius-md);
+}
+
+.timer-label {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.timer-display {
+    font-family: var(--font-timer);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.status-entered .timer-display {
+    color: var(--cyan);
+    text-shadow: 0 0 10px var(--cyan-glow);
+}
+
+.status-alarm .timer-display {
+    color: var(--red);
+    text-shadow: 0 0 10px var(--red-glow);
+    animation: flash-timer-text 1s infinite alternate;
+}
+
+.status-exited .timer-display {
+    color: var(--green);
+    text-shadow: 0 0 8px var(--green-glow);
+}
+
+@keyframes flash-timer-text {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* 氣量與資訊輸入列表 */
+.event-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.event-row {
+    display: grid;
+    grid-template-columns: 80px 85px 75px 1fr;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+}
+
+.event-label-btn {
+    text-align: left;
+    font-weight: 600;
+    padding: 4px 6px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.78rem;
+    transition: all 0.2s;
+    min-height: 28px;
+}
+
+.event-label-btn:hover {
+    background: rgba(0, 229, 255, 0.1);
+    color: var(--cyan);
+    border-color: rgba(0, 229, 255, 0.3);
+}
+
+.event-label-btn.active-time {
+    background: rgba(0, 229, 255, 0.15);
+    color: var(--cyan);
+    border-color: var(--cyan);
+}
+
+.event-time-display {
+    font-family: var(--font-timer);
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--text-primary);
+    text-align: center;
+    background: rgba(0, 0, 0, 0.1);
+    padding: 3px;
+    border-radius: 4px;
+    min-height: 25px;
+}
+
+.input-pressure, .input-info {
+    width: 100%;
+    background-color: var(--bg-input);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.input-pressure:focus, .input-info:focus {
+    border-color: var(--border-focus);
+}
+
+.input-pressure {
+    text-align: center;
+}
+
+/* 新增回報列按鈕 */
+.btn-add-row-container {
+    text-align: center;
+    margin-top: 5px;
+}
+.btn-add-row {
+    background: transparent;
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    color: var(--text-secondary);
+    padding: 3px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-add-row:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+}
+
+/* 卡片腳部控制按鈕 */
+.card-footer {
+    padding: 12px 18px;
+    border-top: 1px solid var(--border-color);
+    background: rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 10px;
+}
+
+.card-footer button {
+    flex-grow: 1;
+    min-height: 38px;
+}
+
+.btn-start {
+    background: linear-gradient(135deg, rgba(0, 229, 255, 0.2) 0%, rgba(0, 229, 255, 0.05) 100%);
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+}
+.btn-start:hover {
+    background: rgba(0, 229, 255, 0.25);
+}
+
+.btn-ack {
+    background: linear-gradient(135deg, rgba(255, 23, 68, 0.25) 0%, rgba(255, 23, 68, 0.05) 100%);
+    border: 1px solid var(--red);
+    color: var(--red);
+    font-weight: bold;
+    animation: alert-btn-pulse 1s infinite alternate;
+}
+
+@keyframes alert-btn-pulse {
+    0% { transform: scale(1); box-shadow: 0 0 2px rgba(255, 23, 68, 0.1); }
+    100% { transform: scale(1.02); box-shadow: 0 0 12px rgba(255, 23, 68, 0.4); }
+}
+
+.btn-exit {
+    background: linear-gradient(135deg, rgba(0, 230, 118, 0.2) 0%, rgba(0, 230, 118, 0.05) 100%);
+    border: 1px solid var(--green);
+    color: var(--green);
+}
+.btn-exit:hover {
+    background: rgba(0, 230, 118, 0.25);
+}
+
+.btn-reset {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+}
+.btn-reset:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.btn-delete-team {
+    background: rgba(255, 23, 68, 0.05);
+    border: 1px solid rgba(255, 23, 68, 0.2);
+    color: var(--text-muted);
+}
+.btn-delete-team:hover {
+    background: rgba(255, 23, 68, 0.15);
+    color: var(--red);
+}
+
+/* --------------------------------------------------------------------------
+   3.2 表格模式 (Table View / 還原實體版)
+   -------------------------------------------------------------------------- */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-premium);
+    backdrop-filter: blur(12px);
+}
+
+.control-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.control-table th {
+    background-color: rgba(255, 255, 255, 0.02);
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 16px 20px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.control-table td {
+    padding: 12px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    vertical-align: middle;
+}
+
+/* 表格內的組名與隊員 */
+.table-team-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.table-team-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.table-team-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.table-roster-display {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* 表格小組行群組 */
+.team-row-group {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+.team-row-group td {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.team-row-group:last-child {
+    border-bottom: none;
+}
+
+.table-btn-action {
+    padding: 3px 10px;
+    font-size: 0.75rem;
+}
+
+/* ==========================================================================
+   4. Footer & Accordions (Bottom checklists)
+   ========================================================================== */
+.app-footer {
+    margin-top: 30px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-premium);
+}
+
+.checklist-header {
+    background: rgba(255, 255, 255, 0.02);
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.checklist-header h2 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--cyan);
+}
+
+.checklist-accordions {
+    display: flex;
+    flex-direction: column;
+}
+
+.accordion-item {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.accordion-item:last-child {
+    border-bottom: none;
+}
+
+.accordion-trigger {
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 14px 20px;
+    text-align: left;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+    outline: none;
+}
+
+.accordion-trigger::after {
+    content: "▼";
+    font-size: 0.7rem;
+    transition: transform 0.2s;
+    opacity: 0.6;
+}
+
+.accordion-item.active .accordion-trigger::after {
+    transform: rotate(180deg);
+}
+
+.accordion-trigger:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.accordion-item.active .accordion-content {
+    max-height: 1000px;
+    transition: max-height 0.5s cubic-bezier(1, 0, 1, 0);
+    padding: 15px 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.checklist-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+}
+
+.checklist-list label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+}
+
+.checklist-list label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* 潛水專用 */
+.diving-content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.rope-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.rope-table th {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 6px 10px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.rope-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* ==========================================================================
+   5. Modals & Overlay Style
+   ========================================================================== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-premium);
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-large {
+    max-width: 800px;
+}
+
+.modal-small {
+    max-width: 380px;
+}
+
+.modal-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.modal-close {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: var(--red);
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.form-group input[type="text"] {
+    width: 100%;
+    background-color: var(--bg-input);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--text-primary);
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    outline: none;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+}
+
+.form-group input[type="text"]:focus {
+    border-color: var(--border-focus);
+}
+
+/* Personnel selection inside modals */
+.personnel-selector-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.roster-quick-select {
+    background: var(--bg-input);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.roster-tag {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.roster-tag:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
+
+.roster-tag.selected-leader {
+    background: rgba(255, 196, 0, 0.2);
+    border-color: var(--yellow);
+    color: var(--yellow);
+    font-weight: 700;
+}
+
+.roster-tag.selected-member {
+    background: rgba(0, 229, 255, 0.2);
+    border-color: var(--cyan);
+    color: var(--cyan);
+    font-weight: 700;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+/* Roster Manager Layout */
+.roster-manager-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 24px;
+}
+
+.roster-left, .roster-right {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.roster-squad-form, .roster-member-form {
+    display: flex;
+    gap: 8px;
+}
+
+.roster-squad-form input, .roster-member-form input {
+    flex-grow: 1;
+    background: var(--bg-input);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--text-primary);
+    padding: 6px 12px;
+    border-radius: var(--radius-md);
+    outline: none;
+}
+
+.roster-squad-form input:focus, .roster-member-form input:focus {
+    border-color: var(--cyan);
+}
+
+.squad-list-group, .member-list-group {
+    list-style: none;
+    background: var(--bg-input);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-md);
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.squad-item, .member-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.squad-item:last-child, .member-item:last-child {
+    border-bottom: none;
+}
+
+.squad-item:hover, .member-item:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.squad-item.active {
+    background-color: rgba(0, 229, 255, 0.08);
+    border-left: 3px solid var(--cyan);
+}
+
+.btn-delete-roster-item {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.95rem;
+    padding: 2px 6px;
+    transition: color 0.2s;
+}
+
+.btn-delete-roster-item:hover {
+    color: var(--red);
+}
+
+/* QR Code Modal center */
+.text-center {
+    text-align: center;
+}
+.qr-code-wrapper {
+    margin: 20px auto;
+    width: 160px;
+    height: 160px;
+    background-color: #fff;
+    padding: 8px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+.qr-code-wrapper img {
+    max-width: 100%;
+    max-height: 100%;
+}
+.qr-url-text {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--cyan);
+    margin-bottom: 15px;
+    word-break: break-all;
+}
+.qr-tip {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   6. Responsive Design (RWD)
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .app-header {
+        padding: 12px 18px;
+    }
+    .live-clock {
+        font-size: 1.3rem;
+    }
+    .title-area h1 {
+        font-size: 1.25rem;
+    }
+    .team-cards-grid {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-container {
+        padding: 10px;
+    }
+    .app-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        text-align: center;
+        padding: 12px;
+    }
+    .header-left {
+        justify-content: center;
+    }
+    .header-right {
+        justify-content: space-between;
+    }
+    .control-panel {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .panel-left, .panel-right {
+        justify-content: space-between;
+    }
+    .panel-center {
+        width: 100%;
+    }
+    .share-url-container {
+        width: 100%;
+        justify-content: center;
+    }
+    .roster-manager-layout {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    .diving-content-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title-area h1 {
+        font-size: 1.1rem;
+    }
+    .logo {
+        font-size: 1.8rem;
+    }
+    .panel-left {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .btn {
+        width: 100%;
+    }
+    .team-cards-grid {
+        grid-template-columns: 1fr;
+    }
+    .event-row {
+        grid-template-columns: 65px 75px 65px 1fr;
+        font-size: 0.8rem;
+        gap: 4px;
+    }
+    .event-label-btn {
+        font-size: 0.72rem;
+        padding: 4px 2px;
+    }
+    .event-time-display {
+        font-size: 0.8rem;
+    }
+}
+
+/* 快速選擇分隊群組折疊樣式 */
+.squad-select-group {
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-sm);
+    margin-bottom: 8px;
+    background: rgba(255, 255, 255, 0.01);
+    overflow: hidden;
+}
+
+.squad-select-header {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--cyan);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    transition: background 0.2s;
+}
+
+.squad-select-header:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.squad-select-header .arrow {
+    font-size: 0.7rem;
+    opacity: 0.7;
+    transition: transform 0.2s;
+}
+
+.squad-select-members {
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.15);
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+}
+

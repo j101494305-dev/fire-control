@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>苗栗縣政府消防局熱區人員管制系統</title>
+    <!-- Google Fonts: Orbitron for clock, Inter for UI text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="app.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 頂部標頭 -->
+        <header class="app-header">
+            <div class="header-left">
+                <div class="logo">🚒</div>
+                <div class="title-area">
+                    <h1>苗栗縣政府消防局熱區人員管制系統</h1>
+                    <p class="creator-tag">製作者：苗栗分隊 温欣凱</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="connection-status" id="conn-status">
+                    <span class="status-dot pulsing"></span>
+                    <span class="status-text">同步連線中</span>
+                </div>
+                <div class="live-clock" id="live-clock">00:00:00</div>
+            </div>
+        </header>
+
+        <!-- 行動分享與控制面板 -->
+        <section class="control-panel">
+            <div class="panel-left">
+                <button id="btn-add-team" class="btn btn-primary">➕ 新增管制小組</button>
+                <button id="btn-manage-roster" class="btn btn-secondary">👥 分隊人員管理</button>
+                <button id="btn-toggle-sound" class="btn btn-sound status-off">🔇 啟用警報音效</button>
+            </div>
+            
+            <div class="panel-center">
+                <div class="share-url-container" id="share-container" style="display: none;">
+                    <span class="share-label">手機共享網址：</span>
+                    <a href="#" id="share-link" target="_blank" class="share-url">讀取中...</a>
+                    <button id="btn-show-qr" class="btn-qr" title="顯示分享條碼">📱 條碼</button>
+                </div>
+            </div>
+
+            <div class="panel-right">
+                <div class="view-switch-container">
+                    <button id="btn-view-grid" class="btn-switch active">🎴 看板模式</button>
+                    <button id="btn-view-table" class="btn-switch">📋 表格模式</button>
+                </div>
+                <div class="test-mode-container">
+                    <label class="switch-label" title="加速計時以利測試，1秒相當於實際1分鐘">
+                        <input type="checkbox" id="chk-test-mode">
+                        <span class="switch-slider"></span>
+                        <span class="switch-text">⚡ 加速測試</span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- 主要管制看板 -->
+        <main class="board-content">
+            <!-- 看板模式 (卡片式) -->
+            <div id="grid-view" class="view-panel active">
+                <div class="no-teams-message" id="no-teams-msg">
+                    <div class="alert-icon">📋</div>
+                    <h3>目前無管制小組</h3>
+                    <p>請點選左上角「新增管制小組」開始進行熱區管制</p>
+                </div>
+                <div class="team-cards-grid" id="team-cards-container">
+                    <!-- 卡片動態渲染 -->
+                </div>
+            </div>
+
+            <!-- 表格模式 (還原實體管制板) -->
+            <div id="table-view" class="view-panel">
+                <div class="table-wrapper">
+                    <table class="control-table">
+                        <thead>
+                            <tr>
+                                <th width="20%">編組人員 (任務)</th>
+                                <th width="15%">時間</th>
+                                <th width="15%">氣量 (Bar)</th>
+                                <th width="35%">資訊 (地點、問題、資源)</th>
+                                <th width="15%">操作狀態</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-rows-container">
+                            <!-- 表格列動態渲染 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <!-- 底部互動式安全檢核表 -->
+        <footer class="app-footer">
+            <div class="checklist-header">
+                <h2>📋 安全管制參考檢核表 (點選展開)</h2>
+            </div>
+            <div class="checklist-accordions">
+                <!-- 火場安全管制 -->
+                <div class="accordion-item">
+                    <button class="accordion-trigger">🔥 火場安全管制</button>
+                    <div class="accordion-content">
+                        <ul class="checklist-list">
+                            <li><label><input type="checkbox"> 1. 檢查個人防護裝備 (PPE) 是否完整確實</label></li>
+                            <li><label><input type="checkbox"> 2. 繳交個人安全管制卡至管制站</label></li>
+                            <li><label><input type="checkbox"> 3. 確認搜救/滅火任務、行進路徑與目標</label></li>
+                            <li><label><input type="checkbox"> 4. 無線電頻道對頻與通訊測試確認</label></li>
+                            <li><label><input type="checkbox"> 5. 確認進入時的初始氣量 (Bar)</label></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 化學災害管制 -->
+                <div class="accordion-item">
+                    <button class="accordion-trigger">🧪 化災安全管制 (含侷限空間)</button>
+                    <div class="accordion-content">
+                        <ul class="checklist-list">
+                            <li><label><input type="checkbox"> 1. 準備並使用適合該化學物質之偵檢設備</label></li>
+                            <li><label><input type="checkbox"> 2. 確認化學品種類、危害性及熱區範圍</label></li>
+                            <li><label><input type="checkbox"> 3. 評估防護衣 (PPE) 等級 (A/B/C 級) 是否正確</label></li>
+                            <li><label><input type="checkbox"> 4. 預置除汙人員與除汙線架設</label></li>
+                            <li><label><input type="checkbox"> 5. 確認無線電通訊正常與進入氣量</label></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 潛水救援管制 -->
+                <div class="accordion-item">
+                    <button class="accordion-trigger">🤿 潛水救援安全管制與繩訊</button>
+                    <div class="accordion-content">
+                        <div class="diving-content-grid">
+                            <div class="diving-checklist">
+                                <h3>安全步驟：</h3>
+                                <ul class="checklist-list">
+                                    <li><label><input type="checkbox"> 1. 評估下水點水深與流速狀況</label></li>
+                                    <li><label><input type="checkbox"> 2. 計算潛水安全停留與撤退時間</label></li>
+                                    <li><label><input type="checkbox"> 3. 檢查潛水氣瓶氣量與二級頭運作</label></li>
+                                    <li><label><input type="checkbox"> 4. 繩訊與信號繩繫結確認</label></li>
+                                </ul>
+                            </div>
+                            <div class="rope-signals">
+                                <h3>🪢 信號繩訊對照表：</h3>
+                                <table class="rope-table">
+                                    <thead>
+                                        <tr>
+                                            <th>拉繩次數</th>
+                                            <th>水面控制員 ➡️ 潛水員</th>
+                                            <th>潛水員 ➡️ 水面控制員</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>拉 1 下</strong></td>
+                                            <td>你還好嗎？(詢問 Ok)</td>
+                                            <td>我很好，沒問題 (回報 OK)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>拉 2 下</strong></td>
+                                            <td>停止、轉向、放繩</td>
+                                            <td>需要更多繩線</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>拉 3 下</strong></td>
+                                            <td>上升到水面！</td>
+                                            <td>找到目標物了</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>拉 4 下</strong></td>
+                                            <td>停止，原地等待</td>
+                                            <td>⚠️ 有狀況，需要協助！</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 新增/編輯管制小組 Modal -->
+    <div id="modal-team" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-team-title">新增管制小組</h2>
+                <span class="modal-close" id="close-team-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="form-team">
+                    <input type="hidden" id="team-id">
+                    
+                    <div class="form-group">
+                        <label for="input-team-name">小組名稱 (編組/任務)*</label>
+                        <input type="text" id="input-team-name" placeholder="例如：搜救A組、第一車、苗栗分隊一線" required>
+                    </div>
+
+                    <div class="form-group">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <label for="input-mission" style="margin-bottom: 0;">任務說明</label>
+                            <span class="form-helper" style="font-size: 0.75rem; color: var(--yellow); font-weight: 600;">💡 滅火組請註明：攻擊車號、水帶左/右線 (例如: 31車右線)</span>
+                        </div>
+                        <input type="text" id="input-mission" placeholder="例如：二樓搜救、滅火攻擊 (11車左線)">
+                    </div>
+
+                    <!-- 帶隊官選擇與手動輸入 -->
+                    <div class="form-group">
+                        <label>帶隊官 (限1名)*</label>
+                        <div class="personnel-selector-wrapper">
+                            <div class="roster-quick-select" id="roster-leader-select-container">
+                                <!-- 帶隊官快速選擇區 -->
+                            </div>
+                            <input type="text" id="input-leader-manual" placeholder="或手動輸入帶隊官姓名">
+                        </div>
+                    </div>
+
+                    <!-- 組員多選與手動輸入 -->
+                    <div class="form-group">
+                        <label>組員 (可複選)</label>
+                        <div class="personnel-selector-wrapper">
+                            <div class="roster-quick-select multiple" id="roster-members-select-container">
+                                <!-- 組員快速選擇區 -->
+                            </div>
+                            <input type="text" id="input-members-manual" placeholder="手動輸入其他組員姓名 (以逗號或空格分隔)">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="btn-cancel-team">取消</button>
+                        <button type="submit" class="btn btn-primary">儲存小組</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分隊與人員管理 Modal -->
+    <div id="modal-roster" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>分隊與人員管理</h2>
+                <span class="modal-close" id="close-roster-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="roster-manager-layout">
+                    <!-- 左側分隊清單 -->
+                    <div class="roster-left">
+                        <h3>🏢 分隊列表</h3>
+                        <div class="roster-squad-form">
+                            <input type="text" id="input-squad-name" placeholder="新增分隊名稱">
+                            <button id="btn-add-squad" class="btn btn-small btn-primary">新增</button>
+                        </div>
+                        <ul class="squad-list-group" id="squad-list-container">
+                            <!-- 分隊項目 -->
+                        </ul>
+                    </div>
+                    
+                    <!-- 右側隊員清單 -->
+                    <div class="roster-right">
+                        <h3 id="current-selected-squad-title">隊員名單 (選擇左側分隊)</h3>
+                        <div class="roster-member-form" id="member-form-container" style="display:none;">
+                            <input type="text" id="input-member-name" placeholder="輸入人員姓名">
+                            <button id="btn-add-member" class="btn btn-small btn-primary">新增隊員</button>
+                        </div>
+                        <ul class="member-list-group" id="member-list-container">
+                            <!-- 隊員項目 -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分享 QR Code Modal -->
+    <div id="modal-qr" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>手機掃描共享</h2>
+                <span class="modal-close" id="close-qr-modal">&times;</span>
+            </div>
+            <div class="modal-body text-center">
+                <p>請使用手機掃描下方二維碼，即可即時同步查看與操作管制表：</p>
+                <div class="qr-code-wrapper">
+                    <img id="qr-code-img" src="" alt="分享 QR Code">
+                </div>
+                <div class="qr-url-text" id="qr-url-text"></div>
+                <p class="qr-tip">⚠️ 提醒：手機與電腦必須連接至同一個 Wi-Fi 網路</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 載入 Supabase JS SDK (用於雲端同步模式) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- 載入前端控制邏輯 -->
+    <script src="app.js"></script>
+</body>
+</html>
